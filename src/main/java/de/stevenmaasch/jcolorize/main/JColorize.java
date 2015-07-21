@@ -7,23 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-
-import de.stevenmaasch.jcolorize.colorizer.BracketColorizer;
-import de.stevenmaasch.jcolorize.colorizer.Colorizer;
-import de.stevenmaasch.jcolorize.colorizer.DateColorizer;
-import de.stevenmaasch.jcolorize.colorizer.HttpMethodColorizer;
-import de.stevenmaasch.jcolorize.colorizer.IpAddressColorizer;
-import de.stevenmaasch.jcolorize.colorizer.LogLevelColorizer;
-import de.stevenmaasch.jcolorize.colorizer.MacAddressColorizer;
-import de.stevenmaasch.jcolorize.colorizer.NothingColorizer;
-import de.stevenmaasch.jcolorize.colorizer.TimeColorizer;
+import de.stevenmaasch.jcolorize.colorizer.PatternColorizer;
 
 
 public class JColorize {
@@ -32,47 +16,12 @@ public class JColorize {
 
 	public static void main(String[] args) {
 
-		final CommandLineParser parser = new DefaultParser();
-
-		final Options options = new Options();
-		options.addOption(null, "help", false, "print this message and quit");
-		options.addOption(null, "version", false, "print version information and quit");
-		options.addOption(Option.builder().argName("FILE")..build());
-
-		try {
-			final CommandLine line = parser.parse(options, args);
-			line.h
-
-
-		}
-		catch( ParseException exp ) {
-			printError(exp.getMessage(), 1);
-		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		BufferedReader inReader = null;
-
-		if (args.length == 1) {
+		if (args.length == 0) {
 			inReader = new BufferedReader(new InputStreamReader(System.in));
-		} else if (args.length == 2) {
+		} else if (args.length == 1) {
 			try {
-				inReader = new BufferedReader(new FileReader(new File(args[2])));
+				inReader = new BufferedReader(new FileReader(new File(args[0])));
 			} catch (FileNotFoundException e) {
 				printError(e.getMessage(), 1);
 			}
@@ -80,28 +29,25 @@ public class JColorize {
 			usage(1);
 		};
 
+		PatternColorizer colorizer = PatternColorizer.getInstance();
 		try {
 			String line;
 			while ((line = inReader.readLine()) != null) {
-				Colorizer colorizer = NothingColorizer.getInstance();
-				colorizer = BracketColorizer.getInstance(colorizer);
-				colorizer = DateColorizer.getInstance(colorizer);
-				colorizer = TimeColorizer.getInstance(colorizer);
-				colorizer = LogLevelColorizer.getInstance(colorizer);
-				colorizer = MacAddressColorizer.getInstance(colorizer);
-				colorizer = HttpMethodColorizer.getInstance(colorizer);
-				colorizer = IpAddressColorizer.getInstance(colorizer);
-				final String colorizedLine = colorizer.colorize(line);
-				System.out.println(colorizedLine);
+				System.out.println(colorizer.colorize(line));
 			}
 			inReader.close();
 		} catch (IOException e) {
 			printError(e.getMessage(), 1);
 		}
 	}
+	
+	private static void usage(int status) {
+		System.err.printf("Usage: %s [FILE]\n", PROGRAM_NAME);
+		System.exit(status);
+	}
 
 	private static void printError(String msg, int status) {
-		System.err.println(msg);
+		System.err.printf("%s: %s\n", PROGRAM_NAME, msg);
 		System.exit(status);
 	}
 
