@@ -9,6 +9,8 @@
 	<properties>
 		<commons-lang3.version>3.4</commons-lang3.version>
 		<junit.version>4.12</junit.version>
+		<java-source.version>1.7</java-source.version>
+		<java-target.version>${java-source.version}</java-target.version>
 	</properties>
 
 	<dependencies>
@@ -30,6 +32,16 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${java-source.version}</source>
+					<target>${java-target.version}</target>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
