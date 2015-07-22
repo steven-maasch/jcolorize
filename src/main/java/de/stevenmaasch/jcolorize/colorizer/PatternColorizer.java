@@ -15,7 +15,7 @@ public final class PatternColorizer {
 	private final Iterable<Pair<Pattern, AnsiEscape>> mappings;
 
 	public String colorize(String s) {
-		String tmp = new String(s);
+		String tmp = s;
 		for (Pair<Pattern, AnsiEscape> pair : mappings) {
 			final AnsiEscape esacpe = pair.getRight();
 			final StringBuffer result = new StringBuffer();

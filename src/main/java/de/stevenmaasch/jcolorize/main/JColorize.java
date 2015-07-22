@@ -42,12 +42,12 @@ public class JColorize {
 	}
 	
 	private static void usage(int status) {
-		System.err.printf("Usage: %s [FILE]\n", PROGRAM_NAME);
+		System.err.printf("Usage: %s [FILE]%n", PROGRAM_NAME);
 		System.exit(status);
 	}
 
 	private static void printError(String msg, int status) {
-		System.err.printf("%s: %s\n", PROGRAM_NAME, msg);
+		System.err.printf("%s: %s%n", PROGRAM_NAME, msg);
 		System.exit(status);
 	}
 
