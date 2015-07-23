@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import de.stevenmaasch.jcolorize.colorizer.PatternColorizer;
+import de.stevenmaasch.jcolorize.util.ColorMapping;
 
 
 public class JColorize {
@@ -29,7 +30,8 @@ public class JColorize {
 			usage(1);
 		};
 
-		PatternColorizer colorizer = PatternColorizer.getInstance();
+		final ColorMapping colorMapping = ColorMapping.getInstance();
+		PatternColorizer colorizer = new PatternColorizer(colorMapping);
 		try {
 			String line;
 			while ((line = inReader.readLine()) != null) {
