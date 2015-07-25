@@ -9,12 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Colorize {
 	
-	// TODO: Support more than one ansi format eg yellow bold
-	
-	// TODO: Support ordering by index number   
-	
 	AnsiEscape value();
 	
 	boolean enabled() default true;
 
+	int position() default 0;
+	
 }

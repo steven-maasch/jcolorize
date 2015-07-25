@@ -1,25 +1,25 @@
 package de.stevenmaasch.jcolorize.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
 public class ColorMapping {
 
-	private final Iterable<Pair<Pattern, AnsiEscape>> mapping;
+	private final List<Mapping> mapping;
 	
 	public static ColorMapping getInstance() {
-		final ArrayList<Pair<Pattern, AnsiEscape>> mappings = new ArrayList<Pair<Pattern, AnsiEscape>>();
+		final List<Mapping> mapping = new LinkedList<>();
 		for (Field field : getPublicStaticDeclaredFieldsByType(MatchPattern.class, Pattern.class)) {
 			Colorize colorize = field.getAnnotation(Colorize.class);
 			if (colorize != null && colorize.enabled()) {
 				try {
-					mappings.add(new ImmutablePair<Pattern, AnsiEscape>(((Pattern) field.get(null)), colorize.value()));
+					mapping.add(new Mapping((Pattern) field.get(null), colorize.value(), colorize.position()));
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -29,30 +29,31 @@ public class ColorMapping {
 				}
 			}
 		}
-		return new ColorMapping(mappings);
+		return new ColorMapping(mapping);
 	}
 	
-	public Iterable<Pair<Pattern, AnsiEscape>> getMapping() {
+	public List<Mapping> getMapping() {
 		return mapping;
 	}
 	
-	private ColorMapping(Iterable<Pair<Pattern, AnsiEscape>> mapping) {
+	private ColorMapping(List<Mapping> mapping) {
 		this.mapping = mapping;
+		Collections.sort(this.mapping, new MappingPositionComperator());
 	}
 	
 	private static Iterable<Field> getPublicStaticDeclaredFieldsByType(Class<?> c, Class<?> type) {
 		return filterFieldsByType(type, getPublicStaticDeclaredFields(c));
 	}
 	
-	private static boolean isPublicStaticField(Field field) {
-		final int modifiers = field.getModifiers();
+	private static boolean isPublicStatic(Member member) {
+		final int modifiers = member.getModifiers();
 		return Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers);
 	}
 	
 	private static Iterable<Field> getPublicStaticDeclaredFields(Class<?> c) {
 		final List<Field> matchedFields = new ArrayList<>();
 		for (Field field : c.getDeclaredFields()) {
-			if (isPublicStaticField(field)) {
+			if (isPublicStatic(field)) {
 				matchedFields.add(field);
 			}
 		}

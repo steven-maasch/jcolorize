@@ -47,7 +47,7 @@ public final class MatchPattern {
 	public static final Pattern RE_WORDS_ERROR =
 			Pattern.compile(join(WORDS_ERROR, "|", WORDS_FORMAT), Pattern.CASE_INSENSITIVE);
 
-	@Colorize(AnsiEscape.FG_CYAN)
+	@Colorize(value = AnsiEscape.FG_CYAN, position = 10)
 	public static final Pattern RE_BRACKETS = Pattern.compile(RE_NO_ESACPE_LOOKBEHIND.pattern() + "[\\(\\)\\[\\]]");
 
 	@Colorize(AnsiEscape.FG_CYAN)

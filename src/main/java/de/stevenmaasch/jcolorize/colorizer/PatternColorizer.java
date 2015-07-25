@@ -1,23 +1,21 @@
 package de.stevenmaasch.jcolorize.colorizer;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import de.stevenmaasch.jcolorize.util.AnsiEscape;
 import de.stevenmaasch.jcolorize.util.ColorMapping;
+import de.stevenmaasch.jcolorize.util.Mapping;
 
 public final class PatternColorizer {
 
-	private final ColorMapping mapping;
+	private final ColorMapping colorMapping;
 
 	public String colorize(String s) {
 		String tmp = s;
-		for (Pair<Pattern, AnsiEscape> pair : mapping.getMapping()) {
-			final AnsiEscape esacpe = pair.getRight();
+		for (Mapping mapping : colorMapping.getMapping()) {
+			final AnsiEscape esacpe = mapping.getColor();
 			final StringBuffer result = new StringBuffer();
-			final Matcher matcher = pair.getKey().matcher(tmp);
+			final Matcher matcher = mapping.getPattern().matcher(tmp);
 			while (matcher.find()) {
 				matcher.appendReplacement(result, esacpe.getEscapeSequence() + "$0" + AnsiEscape.FG_DEFAULT.getEscapeSequence());
 			}
@@ -28,11 +26,11 @@ public final class PatternColorizer {
 	}
 
 	public PatternColorizer(ColorMapping mapping) {
-		this.mapping = mapping;
+		this.colorMapping = mapping;
 	}
 	
 	public ColorMapping getColorMapping() {
-		return mapping;
+		return colorMapping;
 	}
 
 }
