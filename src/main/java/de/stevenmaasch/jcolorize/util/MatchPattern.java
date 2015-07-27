@@ -48,7 +48,8 @@ public final class MatchPattern {
 		"destroy(?:ed|ing)?",
 		"unbound(?:ed)?",
 		"unregistered",
-		"exception"
+		"exception",
+		"todo"
 	};
 	
 	private static final String[] PHRASES_ERROR = {
@@ -66,7 +67,6 @@ public final class MatchPattern {
 		"persistence unit",
 		"data source",
 		"jta"
-		
 	};
 	
 	private static final String RE_WORD_BOUNDARY = "\\b";
@@ -108,6 +108,7 @@ public final class MatchPattern {
 	
 	/**
 	 * Sat Jul 11 13:52:30 CEST 2015
+	 * TODO: Merge with date iso
 	 */
 	@Colorize(value = AnsiEscape.FG_BLUE)
 	public static final Pattern RE_DATE =
@@ -115,6 +116,7 @@ public final class MatchPattern {
 					"[a-zA-z]{3} [a-zA-z]{3} \\d{2} \\d{2}:\\d{2}:\\d{2} [a-zA-z]{1,5} \\d{4}" +
 					RE_WORD_BOUNDARY);
 
+	// TODO: Merge with date iso
 	@Colorize(value = AnsiEscape.FG_BLUE, enabled = false)
 	public static final Pattern RE_TIME_ISO8601 =
 			Pattern.compile(RE_WORD_BOUNDARY + "\\d{2}:\\d{2}:\\d{2}(,\\d{1,3})?" + RE_WORD_BOUNDARY);
