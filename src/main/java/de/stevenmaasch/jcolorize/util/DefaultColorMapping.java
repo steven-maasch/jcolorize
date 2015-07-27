@@ -3,40 +3,24 @@ package de.stevenmaasch.jcolorize.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+public class DefaultColorMapping {
 
-public class ColorMapping {
-
-	private final Iterable<Pair<Pattern, AnsiEscape>> mapping;
+	private final Map<Pattern, AnsiEscape> mapping;
 	
-	public static ColorMapping getInstance() {
-		final ArrayList<Pair<Pattern, AnsiEscape>> mappings = new ArrayList<Pair<Pattern, AnsiEscape>>();
-		for (Field field : getPublicStaticDeclaredFieldsByType(MatchPattern.class, Pattern.class)) {
-			Colorize colorize = field.getAnnotation(Colorize.class);
-			if (colorize != null && colorize.enabled()) {
-				try {
-					mappings.add(new ImmutablePair<Pattern, AnsiEscape>(((Pattern) field.get(null)), colorize.value()));
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return new ColorMapping(mappings);
+	public static DefaultColorMapping getInstance() {
+		return new DefaultColorMapping(getMappingFromAnnotation(MatchPattern.class));
 	}
 	
-	public Iterable<Pair<Pattern, AnsiEscape>> getMapping() {
+	public Map<Pattern, AnsiEscape> getMapping() {
 		return mapping;
 	}
 	
-	private ColorMapping(Iterable<Pair<Pattern, AnsiEscape>> mapping) {
+	private DefaultColorMapping(Map<Pattern, AnsiEscape> mapping) {
 		this.mapping = mapping;
 	}
 	
@@ -67,6 +51,23 @@ public class ColorMapping {
 			}
 		}
 		return matchedFields;
+	}
+	
+	private static Map<Pattern, AnsiEscape> getMappingFromAnnotation(Class<?> c) {
+		final Map<Pattern, AnsiEscape> mapping = new HashMap<>();
+		for (Field field : getPublicStaticDeclaredFieldsByType(c, Pattern.class)) {
+			Colorize colorize = field.getAnnotation(Colorize.class);
+			if (colorize != null && colorize.enabled()) {
+				try {
+					mapping.put((Pattern) field.get(null), colorize.value());
+				} catch (IllegalArgumentException e) {
+					throw new RuntimeException("Unable to generate color mapping from annotations.", e);
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException("Unable to generate color mapping from annotations.", e);
+				}
+			}
+		}
+		return mapping;
 	}
 	
 }

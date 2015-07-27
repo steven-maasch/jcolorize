@@ -7,14 +7,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Colorize {
-	
-	// TODO: Support more than one ansi format eg yellow bold
-	
-	// TODO: Support ordering by index number   
+public @interface Colorize {  
 	
 	AnsiEscape value();
 	
 	boolean enabled() default true;
 
+//	int posIndex() default 0;
 }

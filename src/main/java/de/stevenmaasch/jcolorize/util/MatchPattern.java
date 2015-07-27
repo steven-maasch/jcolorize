@@ -31,10 +31,6 @@ public final class MatchPattern {
 	
 	private static final String WORDS_FORMAT = "(\\w*(%s)\\w*)";
 	
-	/*
-	 * 
-	 */
-	
 	@Colorize(AnsiEscape.FG_GREEN)
 	public static final Pattern RE_WORDS_GOOD =
 			Pattern.compile(join(WORDS_GOOD, "|", WORDS_FORMAT), Pattern.CASE_INSENSITIVE);
