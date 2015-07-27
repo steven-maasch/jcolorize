@@ -9,21 +9,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class DefaultColorMapping {
+public class ColorMapping {
 
 	private final List<Mapping> mapping;
 	
-	public static DefaultColorMapping getInstance() {
+	public static ColorMapping getInstance() {
 		final List<Mapping> mapping = getMappingFromAnnotation(MatchPattern.class);
 		Collections.sort(mapping, new MappingPositionComperator());
-		return new DefaultColorMapping(mapping);
+		return new ColorMapping(mapping);
 	}
 	
 	public List<Mapping> getMapping() {
 		return mapping;
 	}
 	
-	private DefaultColorMapping(List<Mapping> mapping) {
+	private ColorMapping(List<Mapping> mapping) {
 		this.mapping = mapping;
 	}
 	

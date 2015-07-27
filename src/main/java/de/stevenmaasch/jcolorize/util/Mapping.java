@@ -3,7 +3,7 @@ package de.stevenmaasch.jcolorize.util;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class Mapping {
+public final class Mapping {
 	
 	private final Pattern pattern;
 	

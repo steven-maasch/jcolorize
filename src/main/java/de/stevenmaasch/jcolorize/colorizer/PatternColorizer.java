@@ -3,12 +3,12 @@ package de.stevenmaasch.jcolorize.colorizer;
 import java.util.regex.Matcher;
 
 import de.stevenmaasch.jcolorize.util.AnsiEscape;
-import de.stevenmaasch.jcolorize.util.DefaultColorMapping;
+import de.stevenmaasch.jcolorize.util.ColorMapping;
 import de.stevenmaasch.jcolorize.util.Mapping;
 
 public final class PatternColorizer {
 
-	private final DefaultColorMapping colorMapping;
+	private final ColorMapping colorMapping;
 
 	public String colorize(String s) {
 		String tmp = s;
@@ -25,11 +25,11 @@ public final class PatternColorizer {
 		return tmp;
 	}
 
-	public PatternColorizer(DefaultColorMapping mapping) {
+	public PatternColorizer(ColorMapping mapping) {
 		this.colorMapping = mapping;
 	}
 	
-	public DefaultColorMapping getColorMapping() {
+	public ColorMapping getColorMapping() {
 		return colorMapping;
 	}
 
