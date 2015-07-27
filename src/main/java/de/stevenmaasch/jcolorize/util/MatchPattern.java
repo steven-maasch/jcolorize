@@ -6,42 +6,90 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class MatchPattern {
 
-	private static final String[] WORDS_GOOD = {
-			"started", "activ", "ready", "online",
-			"configured", "enable", "open",
-			"complete", "done", "connected",
-			"finish", "clean"
+	private static final String[] PHRASES_GOOD = {
+		"done",
+		"complet(?:e[d]?|ing){1}",
+		"start(?:ed|ing)?",
+		"ready",
+		"succeeded",
+		"success(?:fully)?",
+		"finish(?:ed)?",
+		"configure[d]?",
+		"enabl(?:e[d]?|ing){1}",
+		"active",
+		"found",
+		"detected"
 	};
-
-	private static final String[] WORDS_BAD = {
-			"warn", "restart", "exit", "stop", "shutting",
-			"down", "close", "unreach", "can't", "cannot", "skip",
-			"deny", "disable", "ignored", "missing", "blocking",
-			"ignore", "unable", "offline", "terminat", "empty",
-			"null", "exception", "throw"
+	
+	private static final String[] PHRASES_BAD = {
+		"(?:can[ ]?)?not(?: available| supported| work(?:ing)?| found| enabled| started| completed)?",
+		"but no",
+		"can't",
+		"empty",
+		"null",
+		"unable",
+		"offline",
+		"missing",
+		"exit",
+		"warning",
+		"no result[s]?",
+		"restart(?:ed|ing)?",
+		"shut(?:ting)?(?:[ ]?down)?",
+		"clos(?:e[d]?|ing){1}",
+		"stop(?:ped|ping)?",
+		"ignor(?:e[d]?|ing){1}",
+		"block(?:ed|ing)?",
+		"disable[d]?",
+		"skip(?:ped|ping)?",
+		"unreach(?:ed|able)?",
+		"deny|denied",
+		"terminat(?:e[d]?|ing){1}",
+		"throw(?:ed|ing)?",
+		"destroy(?:ed|ing)?",
+		"unbound(?:ed)?",
+		"unregistered",
+		"exception"
 	};
-
-	private static final String[] WORDS_ERROR = {
-			"error", "critical", "invalid", "fail", "alarm", "fatal"	
+	
+	private static final String[] PHRASES_ERROR = {
+		"fatal",
+		"fail(?:ed)?",
+		"invalid",
+		"alarm",
+		"critical",
+		"bug",
+		"error",
+		"unexpected"
+	};
+	
+	private static final String[] PHRASES_JAVA = {
+		"persistence unit",
+		"data source",
+		"jta"
+		
 	};
 	
 	private static final String RE_WORD_BOUNDARY = "\\b";
 	
 	private static final Pattern RE_NO_ESACPE_LOOKBEHIND = Pattern.compile("(?<!\\u001b)");
 	
-	private static final String WORDS_FORMAT = "(\\w*(%s)\\w*)";
+	private static final String PHRASES_FORMAT = "(\\b(%s)\\b)";
 	
 	@Colorize(AnsiEscape.FG_GREEN)
-	public static final Pattern RE_WORDS_GOOD =
-			Pattern.compile(join(WORDS_GOOD, "|", WORDS_FORMAT), Pattern.CASE_INSENSITIVE);
+	public static final Pattern RE_PHRASES_GOOD =
+			Pattern.compile(join(PHRASES_GOOD, "|", PHRASES_FORMAT), Pattern.CASE_INSENSITIVE);
 	
 	@Colorize(AnsiEscape.FG_YELLOW)
-	public static final Pattern RE_WORDS_BAD =
-			Pattern.compile(join(WORDS_BAD, "|", WORDS_FORMAT), Pattern.CASE_INSENSITIVE);
+	public static final Pattern RE_PHRASES_BAD =
+			Pattern.compile(join(PHRASES_BAD, "|", PHRASES_FORMAT), Pattern.CASE_INSENSITIVE);
 	
 	@Colorize(AnsiEscape.FG_RED)
-	public static final Pattern RE_WORDS_ERROR =
-			Pattern.compile(join(WORDS_ERROR, "|", WORDS_FORMAT), Pattern.CASE_INSENSITIVE);
+	public static final Pattern RE_PHRASES_ERROR =
+			Pattern.compile(join(PHRASES_ERROR, "|", PHRASES_FORMAT), Pattern.CASE_INSENSITIVE);
+	
+	@Colorize(AnsiEscape.FG_MAGENTA)
+	public static final Pattern RE_PHRASES_JAVA =
+			Pattern.compile(join(PHRASES_JAVA, "|", PHRASES_FORMAT), Pattern.CASE_INSENSITIVE);
 
 	@Colorize(value = AnsiEscape.FG_CYAN, position = 10)
 	public static final Pattern RE_BRACKETS = Pattern.compile(RE_NO_ESACPE_LOOKBEHIND.pattern() + "[\\(\\)\\[\\]]");
