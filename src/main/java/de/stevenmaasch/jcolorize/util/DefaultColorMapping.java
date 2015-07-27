@@ -1,26 +1,29 @@
 package de.stevenmaasch.jcolorize.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class DefaultColorMapping {
 
-	private final Map<Pattern, AnsiEscape> mapping;
+	private final List<Mapping> mapping;
 	
 	public static DefaultColorMapping getInstance() {
-		return new DefaultColorMapping(getMappingFromAnnotation(MatchPattern.class));
+		final List<Mapping> mapping = getMappingFromAnnotation(MatchPattern.class);
+		Collections.sort(mapping, new MappingPositionComperator());
+		return new DefaultColorMapping(mapping);
 	}
 	
-	public Map<Pattern, AnsiEscape> getMapping() {
+	public List<Mapping> getMapping() {
 		return mapping;
 	}
 	
-	private DefaultColorMapping(Map<Pattern, AnsiEscape> mapping) {
+	private DefaultColorMapping(List<Mapping> mapping) {
 		this.mapping = mapping;
 	}
 	
@@ -28,15 +31,15 @@ public class DefaultColorMapping {
 		return filterFieldsByType(type, getPublicStaticDeclaredFields(c));
 	}
 	
-	private static boolean isPublicStaticField(Field field) {
-		final int modifiers = field.getModifiers();
+	private static boolean isPublicStatic(Member member) {
+		final int modifiers = member.getModifiers();
 		return Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers);
 	}
 	
 	private static Iterable<Field> getPublicStaticDeclaredFields(Class<?> c) {
 		final List<Field> matchedFields = new ArrayList<>();
 		for (Field field : c.getDeclaredFields()) {
-			if (isPublicStaticField(field)) {
+			if (isPublicStatic(field)) {
 				matchedFields.add(field);
 			}
 		}
@@ -53,13 +56,13 @@ public class DefaultColorMapping {
 		return matchedFields;
 	}
 	
-	private static Map<Pattern, AnsiEscape> getMappingFromAnnotation(Class<?> c) {
-		final Map<Pattern, AnsiEscape> mapping = new HashMap<>();
+	private static List<Mapping> getMappingFromAnnotation(Class<?> c) {
+		final List<Mapping> mapping = new LinkedList<>();
 		for (Field field : getPublicStaticDeclaredFieldsByType(c, Pattern.class)) {
 			Colorize colorize = field.getAnnotation(Colorize.class);
 			if (colorize != null && colorize.enabled()) {
 				try {
-					mapping.put((Pattern) field.get(null), colorize.value());
+					mapping.add(new Mapping((Pattern) field.get(null), colorize.value(), colorize.position()));
 				} catch (IllegalArgumentException e) {
 					throw new RuntimeException("Unable to generate color mapping from annotations.", e);
 				} catch (IllegalAccessException e) {

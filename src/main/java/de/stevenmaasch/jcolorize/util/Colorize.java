@@ -7,11 +7,12 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Colorize {  
+public @interface Colorize {
 	
 	AnsiEscape value();
 	
 	boolean enabled() default true;
 
-//	int posIndex() default 0;
+	int position() default 0;
+
 }

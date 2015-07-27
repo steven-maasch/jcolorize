@@ -43,7 +43,7 @@ public final class MatchPattern {
 	public static final Pattern RE_WORDS_ERROR =
 			Pattern.compile(join(WORDS_ERROR, "|", WORDS_FORMAT), Pattern.CASE_INSENSITIVE);
 
-	@Colorize(AnsiEscape.FG_CYAN)
+	@Colorize(value = AnsiEscape.FG_CYAN, position = 10)
 	public static final Pattern RE_BRACKETS = Pattern.compile(RE_NO_ESACPE_LOOKBEHIND.pattern() + "[\\(\\)\\[\\]]");
 
 	@Colorize(AnsiEscape.FG_CYAN)
@@ -57,8 +57,17 @@ public final class MatchPattern {
 	@Colorize(AnsiEscape.FG_BLUE)
 	public static final Pattern RE_DATE_ISO8601 =
 			Pattern.compile(RE_WORD_BOUNDARY + "\\d{4}-\\d{2}-\\d{2}" + RE_WORD_BOUNDARY);
+	
+	/**
+	 * Sat Jul 11 13:52:30 CEST 2015
+	 */
+	@Colorize(value = AnsiEscape.FG_BLUE)
+	public static final Pattern RE_DATE =
+			Pattern.compile(RE_WORD_BOUNDARY +
+					"[a-zA-z]{3} [a-zA-z]{3} \\d{2} \\d{2}:\\d{2}:\\d{2} [a-zA-z]{1,5} \\d{4}" +
+					RE_WORD_BOUNDARY);
 
-	@Colorize(AnsiEscape.FG_BLUE)
+	@Colorize(value = AnsiEscape.FG_BLUE, enabled = false)
 	public static final Pattern RE_TIME_ISO8601 =
 			Pattern.compile(RE_WORD_BOUNDARY + "\\d{2}:\\d{2}:\\d{2}(,\\d{1,3})?" + RE_WORD_BOUNDARY);
 
