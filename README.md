@@ -12,6 +12,7 @@ Especially designed to colorize the log files of Apache Tomcat and Wildfly AS.
 	Examples:
 		jcolorize server.log | less [-R]
 		cat server.log | jcolorize | less [-R]
+		tail -f server.log | jcolorize
 
 ##Build
 
