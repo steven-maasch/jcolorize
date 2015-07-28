@@ -1,4 +1,4 @@
-package de.stevenmaasch.jcolorize.util;
+package de.stevenmaasch.jcolorize.model;
 
 public enum AnsiEscape {
 

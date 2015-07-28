@@ -1,4 +1,4 @@
-package de.stevenmaasch.jcolorize.util;
+package de.stevenmaasch.jcolorize.model;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import de.stevenmaasch.jcolorize.util.Colorize;
+import de.stevenmaasch.jcolorize.util.MappingPositionComperator;
 
 public class ColorMapping {
 

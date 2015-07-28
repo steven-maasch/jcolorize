@@ -2,9 +2,9 @@ package de.stevenmaasch.jcolorize.colorizer;
 
 import java.util.regex.Matcher;
 
-import de.stevenmaasch.jcolorize.util.AnsiEscape;
-import de.stevenmaasch.jcolorize.util.ColorMapping;
-import de.stevenmaasch.jcolorize.util.Mapping;
+import de.stevenmaasch.jcolorize.model.AnsiEscape;
+import de.stevenmaasch.jcolorize.model.ColorMapping;
+import de.stevenmaasch.jcolorize.model.Mapping;
 
 public final class PatternColorizer {
 

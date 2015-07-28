@@ -3,9 +3,10 @@ package de.stevenmaasch.jcolorize.util;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class MappingPositionComperator implements Comparator<Mapping>, Serializable {
+import de.stevenmaasch.jcolorize.model.Mapping;
 
-	private static final long serialVersionUID = -5109372544055349531L;
+@SuppressWarnings("serial")
+public class MappingPositionComperator implements Comparator<Mapping>, Serializable {
 
 	@Override
 	public int compare(Mapping m1, Mapping m2) {

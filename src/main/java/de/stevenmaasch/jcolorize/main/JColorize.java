@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import de.stevenmaasch.jcolorize.colorizer.PatternColorizer;
-import de.stevenmaasch.jcolorize.util.ColorMapping;
+import de.stevenmaasch.jcolorize.model.ColorMapping;
 
 
 public class JColorize {
