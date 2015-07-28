@@ -11,6 +11,8 @@
 		<junit.version>4.12</junit.version>
 		<java-source.version>1.7</java-source.version>
 		<java-target.version>${java-source.version}</java-target.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<assembleDirectory>${project.build.directory}</assembleDirectory>
 	</properties>
 
 	<dependencies>
@@ -31,6 +33,7 @@
 	</dependencies>
 
 	<build>
+		
 		<plugins>
 
 			<plugin>
@@ -48,6 +51,7 @@
 				<artifactId>appassembler-maven-plugin</artifactId>
 				<version>1.10</version>
 				<configuration>
+				<assembleDirectory>${assembleDirectory}/jcolorize</assembleDirectory>
 					<programs>
 						<program>
 							<mainClass>de.stevenmaasch.jcolorize.main.JColorize</mainClass>
@@ -58,9 +62,18 @@
 						</program>
 					</programs>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
+	
 	</build>
 
 </project>
